@@ -1,12 +1,33 @@
+/*
+app.get("/app/echo/", (req, res) => {
+  res.status(200).json({ 'message' : req.query.number });
+  res.status(200).json({ 'message' : req.body.number });
+});
+
+app.use(express.json())
+app.use(express.urlencoded({extended : true}))
+
+const logging = (req, res, nect) => {
+  res.statusCode = 200
+  console.log(req.ip + ' - - ' + Date.now())
+  next()
+}
+// Logging middleware
+app.use(logging )
+
+*/
+
+
 // Require Express.js
 const express = require("express");
 const app = express();
+const morgan = require("morgan")
+const fs = require("fs")
 
 const args = require("minimist")(process.argv.slice(2));
 const port = args.port || 5000;
 
 // Copy functions from A2
-
 function coinFlip() {
   let rand = Math.floor(Math.random() * 100 + 1);
   if (rand % 2 == 0) {
@@ -59,6 +80,9 @@ function flipACoin(call1) {
   return object2;
 }
 
+//Request Morgan
+app.use(morgan('combined'))
+
 // Start an app server
 const server = app.listen(port, () => {
   console.log("App listening on port %PORT%".replace("%PORT%", port));
@@ -96,5 +120,7 @@ app.get("/app/flip/call/:tails", (req, res) => {
 // Define default endpoint
 // Default response for any other request
 app.use(function (req, res) {
-  res.status(404).send("404 NOT FOUND");
+  const statusCode = 404
+  const statusMessage = "Not FOUND"
+  res.status(statusCode).end(statusCode + ' ' + statusMessage)
 });
