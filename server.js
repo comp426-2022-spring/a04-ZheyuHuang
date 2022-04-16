@@ -21,11 +21,14 @@ app.use(logging )
 // Require Express.js
 const express = require("express");
 const app = express();
+
 const morgan = require("morgan")
+const errorhandler = request('errorhandler')
 const fs = require("fs")
 
 const args = require("minimist")(process.argv.slice(2));
-const port = args.port || 5000;
+args["port"]
+//const port = args.port || 5000;
 
 // Copy functions from A2
 function coinFlip() {
@@ -116,6 +119,10 @@ app.get("/app/flip/call/heads", (req, res) => {
 app.get("/app/flip/call/:tails", (req, res) => {
   res.status(200).json(flipACoin("tails"));
 });
+
+app.getMaxListeners("/app/error/", (req, res) => {
+  throw new Error("Error test successful")
+})
 
 // Define default endpoint
 // Default response for any other request
