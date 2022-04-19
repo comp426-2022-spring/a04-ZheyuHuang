@@ -1,28 +1,8 @@
-/*
-app.get("/app/echo/", (req, res) => {
-  res.status(200).json({ 'message' : req.query.number });
-  res.status(200).json({ 'message' : req.body.number });
-});
-
-app.use(express.json())
-app.use(express.urlencoded({extended : true}))
-
-const logging = (req, res, nect) => {
-  res.statusCode = 200
-  console.log(req.ip + ' - - ' + Date.now())
-  next()
-}
-// Logging middleware
-app.use(logging )
-
-*/
-
-
 // Require Express.js
 const express = require("express");
 const app = express();
 
-const logdb = require('./database')
+const logdb = require('./database.js')
 const morgan = require("morgan")
 //const errorhandler = request('errorhandler')
 const fs = require("fs")
@@ -148,6 +128,14 @@ app.use((req, res, next) => {
   // res.status(200).json(info);
   next();
 });
+
+if (log == true) {
+    // Use morgan for logging to files
+    // Create a write stream to append (flags: 'a') to a file
+    const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
+    // Set up the access logging middleware
+    app.use(morgan('combined', { stream: accessLog }))
+}
 
 app.get("/app/flip", (req, res) => {
   var flipVar = coinFlip();
