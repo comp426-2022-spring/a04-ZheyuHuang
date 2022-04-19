@@ -102,6 +102,25 @@ app.get("/app/", (req, res) => {
   res.end(res.statusCode + " " + res.statusMessage);
 });
 
+app.use((req, res, next) => {
+  let data = {
+      remoteaddr: req.ip,
+      remoteuser: req.user,
+      time: Date.now(),
+      method: req.method,
+      url: req.url,
+      protocol: req.protocol,
+      httpversion: req.httpVersion,
+      status: res.statusCode,
+      referer: req.headers['referer'],
+      useragent: req.headers['user-agent']
+  }
+  const stmt = logdb.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+  const info = stmt.run(data.remoteaddr, data.remoteuser, data.time, data.method, data.url, data.protocol, data.httpversion, data.status, data.referer, data.useragent);
+  // res.status(200).json(info);
+  next();
+});
+
 app.get("/app/flip", (req, res) => {
   var flipVar = coinFlip();
   res.status(200).json({ flip: flipVar });
