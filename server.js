@@ -8,13 +8,15 @@ const morgan = require("morgan")
 const fs = require("fs")
 
 const args = require("minimist")(process.argv.slice(2));
-args["port", "debug", "log", "help"]
-console.log(args)
 
 const port = args.port || 5000
 const debug = args.debug || false
 const log = args.log || true
 const help = args.help
+
+args["port", "debug", "log", "help"]
+console.log(args)
+
 
 const helpmsg = (`
 server.js [options]
@@ -136,16 +138,20 @@ if (log == true) {
     // Set up the access logging middleware
     app.use(morgan('combined', { stream: accessLog }))
 }
-
-if (args.debug){
+// Debug argument
+if (debug === true){
   app.get("/app/log/access", (req, res) => {
     try {
-        const stmt = db.prepare('SELECT * FROM accesslog').all();
+        const stmt = logdb.prepare('SELECT * FROM accesslog').all();
         res.status(200).json(stmt)
     } catch (e) {
         console.error(e)
-    }  
+    }
 })
+
+  app.get("/app/error/", (req, res) => {
+    throw new Error("Error test successful")
+  })
 }
 
 
@@ -168,9 +174,7 @@ app.get("/app/flip/call/:tails", (req, res) => {
   res.status(200).json(flipACoin("tails"));
 });
 
-app.getMaxListeners("/app/error/", (req, res) => {
-  throw new Error("Error test successful")
-})
+
 
 // Define default endpoint
 // Default response for any other request
