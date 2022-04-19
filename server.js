@@ -16,7 +16,7 @@ const debug = args.debug || false
 const log = args.log || true
 const help = args.help
 
-const help = (`
+const helpmsg = (`
 server.js [options]
 
 --port	Set the port number for the server to listen on. Must be an integer
@@ -34,7 +34,7 @@ server.js [options]
 `)
 // If --help or -h, echo help text to STDOUT and exit
 if (args.help || args.h) {
-    console.log(help)
+    console.log(helpmsg)
     process.exit(0)
 }
 
