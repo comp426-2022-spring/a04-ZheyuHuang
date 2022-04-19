@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/comp426-2022-spring/a04-ZheyuHuang/issues"
   },
-  "homepage": "https://github.com/comp426-2022-spring/a04-ZheyuHuang#readme"
+  "homepage": "https://github.com/comp426-2022-spring/a04-ZheyuHuang#readme",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
 }
