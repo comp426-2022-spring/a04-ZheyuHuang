@@ -137,6 +137,18 @@ if (log == true) {
     app.use(morgan('combined', { stream: accessLog }))
 }
 
+if (args.debug){
+  app.get("/app/log/access", (req, res) => {
+    try {
+        const stmt = db.prepare('SELECT * FROM accesslog').all();
+        res.status(200).json(stmt)
+    } catch (e) {
+        console.error(e)
+    }  
+})
+}
+
+
 app.get("/app/flip", (req, res) => {
   var flipVar = coinFlip();
   res.status(200).json({ flip: flipVar });
