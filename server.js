@@ -22,8 +22,9 @@ app.use(logging )
 const express = require("express");
 const app = express();
 
+const logdb = require('./database')
 const morgan = require("morgan")
-const errorhandler = request('errorhandler')
+//const errorhandler = request('errorhandler')
 const fs = require("fs")
 
 const args = require("minimist")(process.argv.slice(2));
