@@ -19,8 +19,6 @@ console.log(args)
 
 
 const helpmsg = (`
-server.js [options]
-
 --port	Set the port number for the server to listen on. Must be an integer
             between 1 and 65535.
 
